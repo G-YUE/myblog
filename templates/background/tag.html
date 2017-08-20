@@ -1,0 +1,36 @@
+{% extends "background/manage.html" %}
+
+{% block dmenus %}
+    <li><a href="/manage/tag/">标签管理</a></li>
+{% endblock %}
+
+{% block count %}
+    <form action="/manage/tag/add.html/" method="POST" target="ifr" id="f1">
+        {% csrf_token %}
+        <iframe id="ifr" name="ifr" style="display: none"></iframe>
+        <label>添加标签:</label>
+        <input type="text" name="new_tag">
+        <input type="button" value="添加" onclick="submitForm();">
+        <span class="error">{{ msg }}</span>
+    </form>
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>标签名称</th>
+            <th>操作</th>
+        </tr>
+        {% for i in obj %}
+            <tr>
+                <td>{{ i.title }}</td>
+                <td>
+                    <div class="oper">
+                        <a href="/manage/tag/edit.html/?nid={{ i.nid }}" class="fa fa-pencil-square-o">编辑</a>
+                    </div>
+
+                    <div class="oper">
+                        <a href="#" onclick="del({{ i.nid }},'tag')" val="{{ i.nid }}" class="fa fa-times del">删除</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

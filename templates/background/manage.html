@@ -1,0 +1,8 @@
+{% extends "background/layout.html" %}
+{% block head %}
+{{ user.user.avatar }}
+{% endblock %}
+{% block count  %}
+    <h4>欢迎您：{{ request.session.name }}！</h4>
+    {{ obj }}
+{% endblock %}

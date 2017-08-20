@@ -1,0 +1,19 @@
+{% extends 'background/tag.html' %}
+
+{% block dmenus %}
+    <li><a href="/manage/tag/">标签管理</a></li>
+    <li>编辑标签</li>
+{% endblock %}
+
+
+{% block count %}
+    <form action="/manage/tag/edit.html/?nid={{ nid }}" method="POST" target="ifr" id="f1">
+        {% csrf_token %}
+        <iframe id="ifr" name="ifr" style="display: none"></iframe>
+        <label>编辑标签:</label>
+        <input type="text" name="new_tag" value="{{ old }}">
+        <input type="button" value="添加" onclick="submitForm();">
+        <span class="error">{{ msg }}</span>
+    </form>
+
+{% endblock %}

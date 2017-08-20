@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/css/manage.css"/>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div class="pg-header">
+    <div class="logo left">博客后台管理</div>
+    <div class="avatar right" style="position: relative">
+        {% block portrait %}
+            <img style="width: 40px;height: 40px;" src="/{% block head %}static/image/default.jpg{% endblock %}">
+        {% endblock %}
+        <div class="user-info">
+            <a>个人资料</a>
+            <a href="/logout/">注销</a>
+        </div>
+    </div>
+    <div class="rmenus right">
+        <a href="/{{ user.site }}"><i class="glyphicon glyphicon-home" aria-hidden="true"></i> 我的博客</a>
+        <a><i class="fa fa-commenting-o" aria-hidden="true"></i> 消息</a>
+        <a><i class="fa fa-envelope-o" aria-hidden="true"></i> 邮件</a>
+        <a><i class="glyphicon glyphicon-user" aria-hidden="true"></i> {{ request.session.name }}</a>
+    </div>
+</div>
+<div class="pg-body">
+    <div class="menus">
+        <a href="/manage/article/0-0-0.html/">文章管理</a>
+        <a href="/manage/category/">分类管理</a>
+        <a href="/manage/tag/">标签管理</a>
+    </div>
+    <div class="content">
+        <ol class="breadcrumb">
+            <li><a href="/manage/index.html/">首页</a></li>
+            {% block dmenus %}  {% endblock %}
+        </ol>
+        {% block count %}{% endblock %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {{ pager|safe }}
+            </ul>
+        </nav>
+    </div>
+</div>
+<script src="/static/jquery-3.2.1.js"></script>
+<script src="/static/js/manage.js"></script>
+{% block js %}{% endblock %}
+
+</body>
+</html>

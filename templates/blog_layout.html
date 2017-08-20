@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.user.username }}</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.css"/>
+{#    <link rel="stylesheet" href="/static/css/blog.css">#}
+    <link rel="stylesheet" href="/static/them/{{ user.theme }}.css">
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div class="page-header title">
+    <div class="container">
+
+        <h1>{{ user.title }}</h1>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/">首页</a></li>
+            <li><a href="/{{ user.site }}">个人首页</a></li>
+            {% if usersite %}
+                <li><a href="/{{ usersite }}">我的主页</a></li>
+            {% endif %}
+            <li><a href="/manage/index.html">后台管理</a></li>
+        </ul>
+    </div>
+</div>
+<div>
+    <div class="count_box">
+        <div class="count_list">
+            {% block count_list %}
+            {% endblock %}
+            {% block count %}
+            {% endblock %}
+        </div>
+
+        <div class="right_box">
+            <div class="right_li">
+                <div class="panel panel-default">
+                    <div class="panel-heading">公告</div>
+                    <div class="panel-body">
+                        <div class="avatar">
+                            <img src="/{{ user.user.avatar }}" alt="">
+                        </div>
+
+                        <ul>
+                            <li>昵称:{{ user.user.nickname }}</li>
+                            <li>邮箱:{{ user.user.email }}</li>
+                            <li>关注:{{ attention }}</li>
+                            <li>粉丝:{{ follower }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="right_li">
+                <div class="panel panel-default">
+                    <div class="panel-heading">我的标签</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for row in tag %}
+                                <li>
+                                    <a href="/{{ user.site }}/tag/{{ row.tag__nid }}.html">{{ row.tag__title }}({{ row.count }})</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="right_li">
+                <div class="panel panel-default">
+                    <div class="panel-heading">我的分类</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for row in category %}
+                                <li>
+                                    <a href="/{{ user.site }}/category/{{ row.category_id }}.html">{{ row.category__title }}({{ row.count }})</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="right_li">
+                <div class="panel panel-default">
+                    <div class="panel-heading">时间归档</div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for row in dates %}
+                               <li>
+                                <a href="/{{ user.site }}/datetime/{{ row.c }}.html">{{ row.c}}({{ row.count }})</a>
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script src="/static/jquery-3.2.1.js"></script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

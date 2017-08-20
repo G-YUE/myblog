@@ -1,0 +1,22 @@
+.login {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 80px;
+    border: 1px solid;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.title {
+    width: 500px;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.error{
+    color:red;
+}
+.code{
+    width: 120px;
+    height: 30px;
+}

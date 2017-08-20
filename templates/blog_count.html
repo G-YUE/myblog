@@ -1,0 +1,81 @@
+{% extends "blog_layout.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/article.css">
+{% endblock %}
+
+{% block count %}
+    <div class="count" id="{{ count.nid }}">
+        <div class="count_title">
+            <h1>{{ count.title }}</h1>
+        </div>
+        <div class="count_a artcount">
+            <p style="text-indent:2em;">{{ count.articledetail.content|safe }}</p>
+            <ul class="nav nav-pills">
+                <li><a>发布时间: {{ count.create_time|date:"Y-m-d H:i:s" }}</a></li>
+                <li><a>阅读({{ count.read_count }})</a></li>
+            </ul>
+        </div>
+
+
+    </div>
+    <div style="margin-bottom: 100px">
+        <div style="margin: 50px auto;" id="thunmbs">
+            <a class="thumbs">
+                <i class="fa fa-thumbs-o-up fa-3x" aria-hidden="true" id="up"></i>
+                <span id="thumbs_up">{{ count.up_count }}</span>
+            </a>
+            <a class="thumbs" id="thumb_down">
+                <i class="fa fa-thumbs-o-down fa-3x" aria-hidden="true" id="down"></i>
+                <span id="thumbs_down">{{ count.down_count }}</span>
+            </a>
+            <p><span id="message"></span></p>
+        </div>
+        <div class="comment" id="comment">
+            <h4>评论列表({{ count.comment_count }})</h4>
+            <div class="comment_list">
+                {% for item in count.comment_set.all %}
+                    <div class="comment_item bottom-line" style="margin: 15px 0">
+                        <a id="{{ item.nid }}">#{{ forloop.counter }}楼</a>
+                        <span>{{ item.create_time | date:"Y-m-d H:i:s" }}</span>
+                        <span><a id="a_comment_author_3731751" href="/{{ item.user.username }}"
+                                 target="_blank">{{ item.user.nickname }}</a></span>
+                        <span><a>回复</a></span>
+                    </div>
+                    <div class="com_body">
+                        {% if item.reply != None %}
+                            <p><a href="#{{ item.reply_id }}">@{{ item.reply.user.nickname }}</a></p>
+                        {% endif %}
+                        {{ item.content }}
+                        <div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h4>发表评论</h4>
+            <div>
+                <p>昵称：<input type="text" disabled="disabled" value="{{ request.session.name }}"></p>
+                <p>评论内容：</p><textarea id="tbCommentBody"></textarea>
+                <p><a id="btn_comment_submit">提交</a></P>
+                <p><span id="commnet_message"></span></p>
+                {% csrf_token %}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="/static/js/article.js"></script>
+    <script src="/static/jquery.cookie.js"></script>
+    <script>
+        String.prototype.Format = function (arg) {
+            v2 = this.replace(/\{(\w+)\}/g, function (k, kk) {
+                return arg[kk]
+            });
+            return v2
+        };
+    </script>
+{% endblock %}

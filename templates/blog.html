@@ -1,0 +1,25 @@
+{% extends "blog_layout.html" %}
+{% block count_list %}
+    {% for i in article %}
+        <div class="count">
+            <div class="count_title">
+                <a href="/{{ i.blog.user.username }}/{{ i.nid }}">{{ i.title }}</a>
+            </div>
+            <div class="count_a">
+                <p>{{ i.summary }}</p>
+            </div>
+            <div class="count_b">
+                <span>发布于{{ i.create_time|date:"Y-m-d H:i:s" }}</span>
+                <a href="/{{ i.blog.user.username }}/{{ i.nid }}#comment"><span class="fa fa-comment-o"></span><b>{{ i.comment_count }}</b></a>
+                <a href="/{{ i.blog.user.username }}/{{ i.nid }}#thunmbs"><span class="fa fa-thumbs-o-up"></span><b>{{ i.up_count }}</b></a>
+                <a href=""><span class="fa fa-book"></span><b>{{ i.read_count }}</b></a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {{ pager|safe }}
+        </ul>
+    </nav>
+{% endblock %}

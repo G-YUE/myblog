@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+}
+.title {
+    padding: 0;
+    margin: 0;
+    background-color: #cecece;
+}
+.count_box {
+    width: 1150px;
+    margin: 0 auto;
+    height: auto !important;
+    overflow: hidden;
+
+    min-height: 713px;
+    background-color: #ffffff;
+}
+
+.count_list {
+    width: 800px;
+    margin-top: 3px;
+    float: left;
+}
+
+.count {
+    padding-top: 10px;
+    border-bottom: 2px solid #c1cbd6;
+}
+
+.count_a p {
+    line-height: 1.8em;
+    margin-bottom: 5px;
+    overflow: hidden;
+    padding-right: 5px;
+    font-size: 12px;
+    padding-top: 5px;
+}
+
+.count_b {
+    margin-bottom: 5px;
+}
+
+.count_b span {
+    margin: 0 5px;
+}
+
+.right_box {
+    width: 300px;
+    margin-top: 3px;
+    float: right;
+}
+
+.right_li {
+    margin-top: 10px;
+}
+.avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+
+.avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}

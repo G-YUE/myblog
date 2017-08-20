@@ -1,0 +1,19 @@
+.artcount{
+    word-break: break-word;
+}
+.com_body{
+    border: 1px dashed #ccc;
+    height: auto;
+    min-height: 50px;
+}
+
+.thumbs{
+    margin-left: 20px;
+}
+#tbCommentBody{
+    width: 100%;
+    min-height: 100px;
+}
+.commenta{
+    margin: 0 0 10px 20px;
+}

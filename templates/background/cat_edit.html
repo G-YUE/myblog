@@ -1,0 +1,16 @@
+{% extends 'background/category.html' %}
+{% block dmenus %}
+    <li><a href="/manage/category/">分类管理</a></li>
+    <li>编辑分类</li>
+{% endblock %}
+{% block count %}
+    <form action="/manage/category/edit.html/?nid={{ nid }}" method="POST" target="ifr" id="f1">
+        {% csrf_token %}
+        <iframe id="ifr" name="ifr" style="display: none"></iframe>
+        <label>编辑分类:</label>
+        <input type="text" name="new_category" value="{{ old }}">
+        <input type="button" value="修改" onclick="submitForm();">
+        <span class="error">{{ msg }}</span>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/register.css">
+</head>
+<body>
+<div class="register">
+    <form class="form-horizontal" method="post" action="/register/" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="title">
+                <h3>用户注册</h3>
+            </div>
+        <div class="avatarupload">
+            <img src="/static/image/default.jpg" alt="" id="previewImg">
+            {{ obj.avatar }}
+            {{ obj.avatar.errors.0 }}
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">用户名</label>
+            <div class="col-sm-5">
+                {{ obj.username }}
+                <span class="error">
+                {{ obj.username.errors.0 }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">输入密码</label>
+            <div class="col-sm-5">
+                {{ obj.password }}
+                <span class="error">
+                    {{ obj.password.errors.0 }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">再输入密码</label>
+            <div class="col-sm-5">
+                {{ obj.pwd_again }}
+                <span class="error">
+                {{ obj.pwd_again.errors.0 }}
+                {{ obj.non_field_errors.0 }}
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">邮箱</label>
+            <div class="col-sm-5">
+                {{ obj.email }}
+                <span class="error">
+                    {{ obj.errors.email.0 }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">验证码</label>
+            <div class="col-sm-5">
+                {{ obj.code }}
+                <span class="error">{{ obj.errors.code.0 }}</span>
+            </div>
+            <div class="col-sm-3">
+                <img class="code" src="/check_code/" title="单击刷新" id="code" onclick="changeCode()">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-default">注册</button>
+                <a href="/login/" class="btn btn-default">已有帐号？去登录</a>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="/static/jquery-3.2.1.js"></script>
+<script src="/static/js/avco.js"></script>
+<script>
+    function upload() {
+        $("#f1").submit();
+        document.getElementById('ifr').onload = function () {
+            var content = document.getElementById('ifr').contentWindow.document.body.innerText;
+            console.log(content)
+            document.getElementById('avatar').value = content;
+            $("#id_fafafa_bg").prop("src", content);
+        }
+    }
+
+</script>
+</body>
+</html>

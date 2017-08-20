@@ -1,0 +1,43 @@
+.register {
+    margin: 80px auto;
+    padding: 10px 15px 10px 0px;
+    width: 600px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 10px 10px 5px #888888;
+    /*padding-right: 15px;*/
+}
+.title{
+    text-align: center;
+}
+.title h3{
+    font-size: 30px;
+}
+.error {
+    color: red;
+}
+
+.code {
+    width: 120px;
+    height: 30px;
+}
+
+.avatarupload {
+    position: relative;
+    top: 0;
+    left: 50px;
+}
+
+#imgSelect {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0px;
+}
+
+#previewImg {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}

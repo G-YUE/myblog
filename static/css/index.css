@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+}
+
+/*头部*/
+.head-box {
+    height: 48px;
+    width: 100%;
+    background-color: #f8f8f8;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+/*导航栏*/
+.head-content {
+    width: 1064px;
+    height: 48px;
+    margin: 0 auto;
+    line-height: 48px;
+    position: relative;
+}
+
+.title {
+    float: left;
+    font-size: 20px;
+    line-height: 48px;
+    color: #838c98;
+    width: 130px;
+}
+
+.action-menu {
+    float: left;
+}
+
+.action-menu a.tb {
+    color: #838c98;
+    padding: 0 13px 0 16px;
+    display: inline-block;
+    margin-left: -4px;
+}
+
+.action-menu a.tb:hover {
+    background-color: #cecece;
+    text-decoration: none;
+}
+
+.action-menu a.active, .action-menu a.active:hover {
+    background-color: #cecece;
+}
+
+.action-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.action-nav a {
+    color: #838c98;
+    margin: 0 2px;
+    padding: 0 2px;
+}
+
+
+
+
+/*内容主体*/
+.body {
+    padding-top: 48px;
+    height: 100%;
+}
+
+
+.count_box{
+        width: 1064px;
+        margin: 0 auto;
+        height: auto!important;
+        overflow: hidden;
+
+        min-height: 713px;
+        background-color: #fff;
+}
+
+.count_list{
+        width: 730px;
+        margin-top: 3px;
+        float: left;
+        /*background-color: #0f0f0f;*/
+}
+.count{
+    padding-top: 10px;
+    border-bottom: 2px solid #dce7f4;
+}
+.count_a p a img{
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+}
+.count_a p{
+    line-height: 1.8em;
+    margin-bottom: 5px;
+    overflow: hidden;
+    padding-right: 5px;
+    font-size: 12px;
+    padding-top: 5px;
+}
+.count_b{
+    margin-bottom: 5px;
+}
+.count_b span{
+    margin: 0 5px;
+}
+
+
+
+.right_box{
+    width: 300px;
+    margin-top: 3px;
+    float: right;
+    /*background-color: #8c8c8c;*/
+}
+.right_a,.right_b{
+    margin-top: 10px;
+}
+.right_a a,.right_b a{
+    display: block;
+}
+.a_count a,.b_count a{
+    display: block;
+    margin-top: 5px;
+}

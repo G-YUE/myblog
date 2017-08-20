@@ -1,0 +1,84 @@
+{% extends "background/manage.html" %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block dmenus %}
+    <li><a href="/manage/article/0-0-0.html">文章管理</a></li>
+    <li>{{ operation }}</li>
+{% endblock %}
+
+{% block count %}
+    <form method="POST" action="/manage/article{{ post_url }}" novalidate style="margin-left: 20px">
+        {% csrf_token %}
+        <p>
+            文章标题
+            {{ art.title }}
+            <span class="error">{{ art.errors.title.0 }}</span>
+        </p>
+        <p>
+            文章简述
+            {{ art.summary }}
+            <span class="error">{{ art.errors.summary.0 }}</span>
+        </p>
+        <div>
+            <div>文章内容<span class="error">{{ art.errors.content.0 }}</span></div>
+            <div>
+                {{ art.content }}
+            </div>
+        </div>
+        <div>
+            <div>
+                个人分类<span class="error">{{ art.errors.category_id.0 }}</span>
+            </div>
+            <div>
+
+                {% for i in  art.category_id %}
+                    {{ i }}
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <div>
+                个人标签<span class="error">{{ art.errors.tag_id.0 }}</span>
+            </div>
+            <div>
+                {% for i in  art.tag_id %}
+                    {{ i }}
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <div>
+                系统分类<span class="error">{{ art.errors.article_type_id.0 }}</span>
+            </div>
+            <div>
+                {% for i in art.article_type_id %}
+                    {{ i }}
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+
+            <input type="submit" value="提交"/>
+        </div>
+    </form>
+    <script src="/static/kindeditor-4.1.10/kindeditor-all.js"></script>
+
+{% endblock %}
+{% block js %}
+    <script src="/static/kindeditor-4.1.10/kindeditor-all.js"></script>
+    <script src="/static/js/add_article.js"></script>
+    <script>
+        KindEditor.create("#i1", {
+            width: "900px",
+            height: "600px",
+            resizeType: 1,
+            uploadJson: '/manage/upload_img.html/',
+            extraFileUploadParams: {
+                "csrfmiddlewaretoken": "{{ csrf_token }}"
+            }
+        })
+    </script>
+{% endblock %}
