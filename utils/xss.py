@@ -13,6 +13,8 @@ def xss(old):
         'h4':[],
         'h5':[],
         'a':[],
+        'pre':[],
+        'code':[],
     }
     soup = BeautifulSoup(old,'html.parser')
 

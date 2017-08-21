@@ -15,7 +15,7 @@
 
 /*导航栏*/
 .head-content {
-    width: 1064px;
+    width: 1200px;
     height: 48px;
     margin: 0 auto;
     line-height: 48px;
@@ -73,7 +73,7 @@
 
 
 .count_box{
-        width: 1064px;
+        width: 1150px;
         margin: 0 auto;
         height: auto!important;
         overflow: hidden;

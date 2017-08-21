@@ -39,6 +39,7 @@ $(function () {
                 success: function (arg) {
                     if (arg.status) {
                         $('#commnet_message').text(arg.message);
+                        alert("评论成功！")
                         location.reload();
                     }
                     else {
