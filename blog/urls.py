@@ -21,7 +21,7 @@ from app01 import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^user.html/$', views.test),
+    # url(r'^user.html/$', views.test),
     url(r'thumbs/$',views.thumbs),
     url(r'comment/$',views.comment),
     url(r'comment-(?P<nid>\d+).html/$',views.comment),

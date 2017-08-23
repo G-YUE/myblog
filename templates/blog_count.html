@@ -40,13 +40,18 @@
                         <span>{{ item.create_time | date:"Y-m-d H:i:s" }}</span>
                         <span><a id="a_comment_author_3731751" href="/{{ item.user.username }}"
                                  target="_blank">{{ item.user.nickname }}</a></span>
-                        <span><a>回复</a></span>
+                        <span><a onclick="reply('{{ item.user.nickname }}',{{ item.nid }});">回复</a></span>
                     </div>
                     <div class="com_body">
                         {% if item.reply != None %}
+
                             <p><a href="#{{ item.reply_id }}">@{{ item.reply.user.nickname }}</a></p>
+                            <div style="border: 1px dashed black;margin: 10px 20px;background-color: #aaaaaa">
+                            <p><span>{{ item.reply.content }}</span></p>
+                            </div>
                         {% endif %}
-                        {{ item.content }}
+
+                        <div>{{ item.content }}</div>
                         <div>
                         </div>
                     </div>
@@ -56,13 +61,15 @@
             <div>
                 <p>昵称：<input type="text" disabled="disabled" value="{{ request.session.name }}"></p>
                 <p>评论内容：</p><textarea id="tbCommentBody"></textarea>
-                <p><a id="btn_comment_submit">提交</a></P>
+                <p><button id="btn_comment_submit">提交</button></P><span id="replyId" class="hide"></span>
                 <p><span id="commnet_message"></span></p>
                 {% csrf_token %}
 
             </div>
         </div>
-
+        <div style="position: relative">
+            <a style="position: fixed;left: 100px;bottom: 50px" href="#top">返回顶部</a>
+        </div>
     </div>
 
 {% endblock %}

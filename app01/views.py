@@ -1,15 +1,13 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction  #事务
 from django.db.models import F
 from app01.view import views
-from django.db.models import Count
 from app01 import models
 from io import BytesIO
 from utils.random_check_code import rd_check_code
-from utils import Bform, paging, upload_avatar
-import json
+from utils import Bform, paging
+import json,re
 
 
 def foo(fun):
@@ -31,7 +29,7 @@ def index(request, *args, **kwargs):
     type_id = int(kwargs.get('type_id')) if kwargs.get('type_id') else None
     if type_id:
         condition['article_type_id'] = type_id
-    article_obj = models.Article.objects.filter(**condition)
+    article_obj = models.Article.objects.filter(**condition).order_by("-create_time")
 
     username = request.session.get("name")
     if username == None:
@@ -135,57 +133,6 @@ def check_code(request):
     img.save(stream, 'png')
     request.session['code'] = code
     return HttpResponse(stream.getvalue())
-
-
-def test(request):
-    from app02.views import menu
-    x=menu(3,request.path_info)
-    return render(request,"test.html",x)
-    # msg_list = [
-    #     {'id': 1, 'content': 'xxx', 'parent_id': None},
-    #     {'id': 2, 'content': 'xxx', 'parent_id': None},
-    #     {'id': 3, 'content': 'xxx', 'parent_id': None},
-    #     {'id': 4, 'content': 'xxx', 'parent_id': 1},
-    #     {'id': 5, 'content': 'xxx', 'parent_id': 4},
-    #     {'id': 6, 'content': 'xxx', 'parent_id': 2},
-    #     {'id': 7, 'content': 'xxx', 'parent_id': 5},
-    #     {'id': 8, 'content': 'xxx', 'parent_id': 3},
-    #     {'id': 9, 'content': 'xxx', 'parent_id': 7},
-    # ]
-    # one = []
-    # two = []
-    # for i in msg_list:
-    #     if not i.get("parent_id"):
-    #         one.append(i)
-    #     else:
-    #         two.append(i)
-    #
-    # def dg(one, two):
-    #     a = []
-    #     for i in range(len(two)):
-    #         two[i]["child"] = []
-    #         for j in range(1, len(two)):
-    #             if two[i]["id"] == two[j]["parent_id"]:
-    #                 two[i]["child"].append(two[j])
-    #                 a.append(two[j]["id"])
-    #                 print(two[i])
-    #                 print(two)
-    #                 print("----------------------------------------------------------------")
-    #     for i in a:
-    #         for j in two:
-    #             if j["id"] == i:
-    #                 two.remove(j)
-    #
-    #     for i in one:
-    #         i["child"] = []
-    #         for j in two:
-    #             if i["id"] == j["parent_id"]:
-    #                 i["child"].append(j)
-    #
-    #     return one
-    #
-    # li = dg(one, two)
-    # return HttpResponse(li)
 
 def user_blog(request, *args, **kwargs):
     site=kwargs.get("user")
@@ -327,15 +274,35 @@ def comment(request,*args,**kwargs):
         temp = {'status': True, 'result': None, 'message': None}
         try:
             art_id = request.POST.get('article_id')
+            reply_id=request.POST.get("replyId")
+
             if request.session['id']:
                 content = request.POST.get('comment_content').strip()
+                reply_obj=re.findall(r"(.+):.*",content)
+                reply_contentF=re.findall(r".+:(.*)",content)
                 if len(content) == 0:
                     raise ValueError("评论内容不能为空！！！")
-                models.Comment.objects.create(
-                    content=content,
-                    user_id=request.session['id'],
-                    article_id=art_id
-                )
+                if len(reply_obj)==1:
+                    if len(reply_contentF)==0 or reply_contentF[0]=="":
+                        raise ValueError("评论内容不能为空！！！")
+                    reply_name = reply_obj[0].replace("@", "")
+                    reply_content = reply_contentF[0].strip()
+                    a=models.Comment.objects.filter(nid=reply_id,user__username=reply_name).exists()
+                    if a:
+                        models.Comment.objects.create(
+                            content=reply_content,
+                            user_id=request.session['id'],
+                            article_id=art_id,
+                            reply_id=reply_id,
+                        )
+                    else:
+                        raise ValueError("请单击楼层后面的回复！！")
+                else:
+                    models.Comment.objects.create(
+                        content=content,
+                        user_id=request.session['id'],
+                        article_id=art_id,
+                    )
                 models.Article.objects.filter(nid=art_id).update(comment_count=F("comment_count") + 1)
                 temp['message'] = '评论成功'
         except ValueError as a:
