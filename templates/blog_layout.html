@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ user.user.username }}</title>
+    <link href="/static/css/style.css" rel="stylesheet"/>
     {% include "include/css.html" %}
     <link rel="stylesheet" href="/static/them/{{ user.theme }}.css">
     {% block css %}{% endblock %}
@@ -32,6 +33,14 @@
 
         <div class="right_box">
             <div class="right_li">
+                <div id="clock" class="light">
+                    <div class="display">
+                        <div class="weekdays"></div>
+                        <div class="ampm"></div>
+                        <div class="alarm"></div>
+                        <div class="digits"></div>
+                    </div>
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">公告</div>
                     <div class="panel-body">
@@ -84,9 +93,9 @@
                     <div class="panel-body">
                         <ul>
                             {% for row in dates %}
-                               <li>
-                                <a href="/{{ user.site }}/datetime/{{ row.c }}.html">{{ row.c}}({{ row.count }})</a>
-                            </li>
+                                <li>
+                                    <a href="/{{ user.site }}/datetime/{{ row.c }}.html">{{ row.c }}({{ row.count }})</a>
+                                </li>
                             {% endfor %}
 
                         </ul>
@@ -99,6 +108,8 @@
     </div>
 </div>
 <script src="/static/jquery-3.2.1.js"></script>
+<script src="/static/js/moment.js"></script>
+<script src=/static/js/script.js></script>
 {% block js %}
 {% endblock %}
 </body>
