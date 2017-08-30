@@ -100,24 +100,22 @@ class Login(forms.Form):
     username = fields.CharField(
         required=True,
         widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '用户名'}),
-        min_length=3,
-        max_length=12,
         error_messages={'required': '用户名不能为空', }
     )
 
     password = fields.CharField(
         widget=widgets.PasswordInput(attrs={'class': "form-control", 'placeholder': '密码'}),
         required=True,
-        min_length=6,
-        max_length=12,
-        error_messages={'required': '密码不能为空!', }
+        error_messages={
+            'required': '密码不能为空!',
+        }
     )
     code = fields.CharField(
         widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '验证码'}),
-        min_length=4,
         required=True,
         error_messages={
             "invalid": "验证码错误！！",
+            'required': '请输入验证码! ！',
         }
     )
 
@@ -129,8 +127,7 @@ class Login(forms.Form):
     def clean_code(self):
         code = self.cleaned_data.get("code")
         t_code = self.request.session.get("code","a")
-        print(code)
-        print(t_code)
+
         if code.upper() != t_code.upper():
             raise ValidationError('验证码错误！')
         return code
@@ -139,7 +136,7 @@ class Login(forms.Form):
         username = self.cleaned_data.get('username')
         pwd = self.cleaned_data.get('password')
         user = self.user.filter(username=username,password=pwd).first()
-        print(user)
+
         if not user:
             raise ValidationError('用户名或者密码错误！！')
         return user.nid

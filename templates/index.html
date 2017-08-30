@@ -5,10 +5,8 @@
     <title>Title</title>
     <script src="/static/jquery-3.2.1.js"></script>
     <link rel="stylesheet" href="/static/css/index.css">
+{#    <link rel="stylesheet" media="screen" href="/static/css/backgroundstyle.css">#}
     {% include "include/css.html" %}
-{#    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">#}
-{#    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">#}
-
 </head>
 <body>
 <div class="head-box">
@@ -47,7 +45,6 @@
 
 </div>
 
-
 <div class="body">
     <div class="count_box">
 
@@ -67,25 +64,29 @@
                     <div class="count_b">
                         <a href="/{{ i.blog.site }}/">{{ i.blog.user.username }}</a>
                         <span>发布于{{ i.create_time|date:"Y-m-d" }}</span>
-                        <a href="/{{ i.blog.user.username }}/{{ i.nid }}#comment"><span class="fa fa-comment-o"></span><b>{{ i.comment_count }}</b></a>
-                        <a href="/{{ i.blog.user.username }}/{{ i.nid }}#thunmbs"><span class="fa fa-thumbs-o-up"></span><b>{{ i.up_count }}</b></a>
+                        <a href="/{{ i.blog.user.username }}/{{ i.nid }}#comment"><span
+                                class="fa fa-comment-o"></span><b>{{ i.comment_count }}</b></a>
+                        <a href="/{{ i.blog.user.username }}/{{ i.nid }}#thunmbs"><span
+                                class="fa fa-thumbs-o-up"></span><b>{{ i.up_count }}</b></a>
                         <a><span class="fa fa-book"></span><b>{{ i.read_count }}</b></a>
                     </div>
                 </div>
             {% endfor %}
+            <div class="page">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {{ pager|safe }}
+                    </ul>
+                </nav>
+            </div>
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    {{ pager|safe }}
-                </ul>
-            </nav>
         </div>
         <div class="right_box">
             <div class="right_a">
                 <div class="panel panel-default">
                     <div class="panel-heading">吐血推荐</div>
                     <div class="panel-body">
-                        {% for row in read  %}
+                        {% for row in read %}
                             <a href="/{{ row.blog.user.username }}/{{ row.nid }}">{{ row.title }}</a>
                         {% endfor %}
                     </div>
@@ -97,7 +98,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">评论最多</div>
                     <div class="panel-body">
-                         {% for row in comment  %}
+                        {% for row in comment %}
                             <a href="/{{ row.blog.user.username }}/{{ row.nid }}">{{ row.title }}</a>
                         {% endfor %}
                     </div>
@@ -108,5 +109,28 @@
 
     </div>
 </div>
+
+<script src="/static/particles.min.js"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/lib/stats.js"></script>
+<script>
+    var count_particles, stats, update;
+    stats = new Stats;
+    stats.setMode(0);
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+    count_particles = document.querySelector('.js-count-particles');
+    update = function () {
+        stats.begin();
+        stats.end();
+        if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+            count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+        }
+        requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+</script>
 </body>
 </html>

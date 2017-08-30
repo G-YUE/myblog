@@ -71,7 +71,7 @@ def index(request, *args, **kwargs):
 def login(request):
     if request.method == "GET":
         obj = Bform.Login(request)
-        return render(request, "login.html", {"obj": obj})
+        return render(request, "login1.html", {"obj": obj})
     else:
         obj = Bform.Login(request, request.POST, request.FILES)
         if obj.is_valid():
@@ -84,8 +84,11 @@ def login(request):
             else:
                 request.session.set_expiry(604800)
             return cok
-        return render(request, "login.html", {"obj": obj})
+        return render(request, "login1.html", {"obj": obj})
 
+
+def login1(request):
+    return render(request,"login1.html")
 
 def logout(request):
     request.session.delete(request.session.session_key)

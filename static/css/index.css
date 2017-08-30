@@ -62,43 +62,47 @@
     padding: 0 2px;
 }
 
-
-
-
 /*内容主体*/
 .body {
     padding-top: 48px;
     height: 100%;
 }
 
+.count_box {
+    width: 1150px;
+    margin: 0 auto;
+    height: auto !important;
+    overflow: hidden;
 
-.count_box{
-        width: 1150px;
-        margin: 0 auto;
-        height: auto!important;
-        overflow: hidden;
-
-        min-height: 713px;
-        background-color: #fff;
+    min-height: 713px;
+    background-color: #fff;
 }
 
-.count_list{
-        width: 730px;
-        margin-top: 3px;
-        float: left;
-        /*background-color: #0f0f0f;*/
+.count_list {
+    width: 730px;
+    margin-top: 3px;
+    float: left;
+    border: 1px solid #f0f0f0;
+    box-shadow: 10px 10px 5px #888888;
+    /*background-color: #0f0f0f;*/
 }
-.count{
-    padding-top: 10px;
+
+.count {
+
+    padding: 10px 10px 10px 20px;
     border-bottom: 2px solid #dce7f4;
 }
-.count_a p a img{
+.count_title a{
+    font-size: 20px;
+}
+.count_a p a img {
     float: left;
     width: 60px;
     height: 60px;
     margin-right: 10px;
 }
-.count_a p{
+
+.count_a p {
     line-height: 1.8em;
     margin-bottom: 5px;
     overflow: hidden;
@@ -106,28 +110,34 @@
     font-size: 12px;
     padding-top: 5px;
 }
-.count_b{
+
+.count_b {
     margin-bottom: 5px;
 }
-.count_b span{
+
+.count_b span {
     margin: 0 5px;
 }
 
-
-
-.right_box{
+.right_box {
     width: 300px;
     margin-top: 3px;
     float: right;
     /*background-color: #8c8c8c;*/
 }
-.right_a,.right_b{
+
+.right_a, .right_b {
     margin-top: 10px;
 }
-.right_a a,.right_b a{
+
+.right_a a, .right_b a {
     display: block;
 }
-.a_count a,.b_count a{
+
+.a_count a, .b_count a {
     display: block;
     margin-top: 5px;
+}
+.page{
+    margin-left: 20px;
 }
