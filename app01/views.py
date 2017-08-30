@@ -39,7 +39,7 @@ def index(request, *args, **kwargs):
         if sit:
             blog_url = sit.site
         else:
-            blog_url="/"
+            blog_url="application/"
     type_list = models.Article.type_choices
 
     page = request.GET.get("page")
@@ -71,24 +71,23 @@ def index(request, *args, **kwargs):
 def login(request):
     if request.method == "GET":
         obj = Bform.Login(request)
-        return render(request, "login1.html", {"obj": obj})
+        return render(request, "pages-login.html", {"obj": obj})
     else:
         obj = Bform.Login(request, request.POST, request.FILES)
         if obj.is_valid():
             cok = redirect("/")
-            # cok.set_signed_cookie("id", obj.cleaned_data.get("password"), salt="gao")
             request.session["name"] = obj.cleaned_data.get("username")
             request.session["id"] = obj.cleaned_data.get("password")
             if not request.POST.get("cookie"):
-                request.session.set_expiry(0)
+                request.session.set_expiry(86400)
             else:
                 request.session.set_expiry(604800)
             return cok
-        return render(request, "login1.html", {"obj": obj})
+        return render(request, "pages-login.html", {"obj": obj})
 
 
 def login1(request):
-    return render(request,"login1.html")
+    return render(request,"pages-login.html")
 
 def logout(request):
     request.session.delete(request.session.session_key)
@@ -98,28 +97,52 @@ def logout(request):
 def register(request):
     if request.method == "GET":
         obj = Bform.Register(request)
-        return render(request, "register.html", {"obj": obj})
+        return render(request, "pages-register.html", {"obj": obj})
     else:
         obj = Bform.Register(request, request.POST, request.FILES)
         if obj.is_valid():
             newuser = obj.cleaned_data
-
-            img = request.FILES.get("avatar")
-            # url = upload_avatar.avatar(img, newuser["username"] + img.name, "static/image/")
-
             newuser.pop("pwd_again")
-            newuser.pop("code")
-            # newuser["avatar"] = url
+            # newuser.pop("code")
             newuser["nickname"] = newuser["username"]
-            # print(newuser)
-
             models.UserInfo.objects.create(**newuser)
             return redirect("/login/")
 
         else:
-            print(obj.errors)
-            return render(request, "register.html", {"obj": obj})
+            return render(request, "pages-register.html", {"obj": obj})
 
+@foo
+def application(request):
+    if request.method=="POST":
+        res={"status":True,"msg":None}
+        text=request.POST.get("application").strip()
+        if len(text)>=20:
+            application_obj=models.Application.objects.filter(user__username=request.session["name"]).first()
+            if not application_obj:
+
+                x=models.Application.objects.create(user_id=request.session.get("id"),text=text)
+                if x:
+                    res["msg"]="您的申请已经提交到后台，等待审核！"
+                else:
+                    res["status"]=False
+                    res["msg"]="申请提交失败，请稍候再试！"
+            elif application_obj.status==0:
+                res["status"]=False
+                res["msg"]="您已经提交过申请了。正在审核，请不要重复提交！"
+            elif application_obj.status==1:
+                res["status"]=False
+                res["msg"]="您提交的申请被拒绝了。请下周一再提交申请！"
+        else:
+            res["status"]=False
+            res["msg"]="字数小于20个字！"
+
+        return HttpResponse(json.dumps(res))
+    else:
+        blog_obj=models.Blog.objects.filter(user__username=request.session["name"]).first()
+        if not blog_obj:
+            return render(request,"application.html")
+        else:
+            return redirect("/")
 
 # def avatar(request):
 #     if request.method == "POST":
@@ -141,7 +164,7 @@ def user_blog(request, *args, **kwargs):
     site=kwargs.get("user")
     obj = models.Blog.objects.filter(site=site).first()
     if not obj:
-        return redirect("/")
+        return render(request,"application.html")
     request.session["bid"]=obj.nid
     article = obj.article_set.all()
 

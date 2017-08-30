@@ -6,7 +6,9 @@
 .head-box {
     height: 48px;
     width: 100%;
-    background-color: #f8f8f8;
+    /*background-color: #f8f8f8;*/
+    background-image: url(/static/img/6.jpg);
+    background-position:0px -400px;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -66,6 +68,7 @@
 .body {
     padding-top: 48px;
     height: 100%;
+    background-image: url(/static/img/5.jpg);
 }
 
 .count_box {
@@ -76,6 +79,7 @@
 
     min-height: 713px;
     background-color: #fff;
+    opacity: 0.9;
 }
 
 .count_list {
@@ -83,7 +87,6 @@
     margin-top: 3px;
     float: left;
     border: 1px solid #f0f0f0;
-    box-shadow: 10px 10px 5px #888888;
     /*background-color: #0f0f0f;*/
 }
 
@@ -123,6 +126,7 @@
     width: 300px;
     margin-top: 3px;
     float: right;
+    margin-right: 20px;
     /*background-color: #8c8c8c;*/
 }
 

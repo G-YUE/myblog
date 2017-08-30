@@ -33,9 +33,10 @@ urlpatterns = [
 
 
     url(r'^login/', views.login),
-    url(r'^login1/', views.login),
+    url(r'^login1/', views.login1),
     url(r'^logout/', views.logout),
     url(r'^register/', views.register),
+    url(r'^application/', views.application),
     # url(r'^avatar/', views.avatar),
 
 

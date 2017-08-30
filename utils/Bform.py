@@ -32,42 +32,42 @@ class Register(forms.Form):
                         'max_length': '密码最多不超过为12个字符!', },
     )
     pwd_again = fields.CharField(
-        widget=widgets.PasswordInput(attrs={'class': "form-control", 'placeholder': '再次输入密码!'}, render_value=True),
+        widget=widgets.PasswordInput(attrs={'class': "form-control", 'placeholder': '再次输入密码'}, render_value=True),
         required=True,
         error_messages={'required': '请再次输入密码!', }
     )
-    avatar = fields.ImageField(
-        widget=widgets.FileInput(attrs={"id":"imgSelect"}),
-        error_messages={
-            "required": "请上传头像！！",
-            "invalid": "请上传图片类型的图片！！",
-        }
+    # avatar = fields.ImageField(
+    #     widget=widgets.FileInput(attrs={"id":"imgSelect"}),
+    #     error_messages={
+    #         "required": "请上传头像！！",
+    #         "invalid": "请上传图片类型的图片！！",
+    #     }
+    #
+    # )
 
-    )
-
-    code = fields.CharField(
-        widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '验证码'}),
-        min_length=4,
-        required=True,
-        error_messages={
-            "required":"验证码不能为空！！",
-            "invalid": "验证码错误！！",
-        }
-    )
+    # code = fields.CharField(
+    #     widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '验证码'}),
+    #     min_length=4,
+    #     required=True,
+    #     error_messages={
+    #         "required":"验证码不能为空！！",
+    #         "invalid": "验证码错误！！",
+    #     }
+    # )
 
     def __init__(self,request, *args, **kwargs):
         super(Register, self).__init__(*args, **kwargs)
         self.user=models.UserInfo.objects
         self.request=request
 
-    def clean_code(self):
-        code = self.cleaned_data.get("code")
-        t_code = self.request.session.get("code","a")
-        print(code)
-        print(t_code)
-        if code.upper() != t_code.upper():
-            raise ValidationError('验证码错误！')
-        return code
+    # def clean_code(self):
+    #     code = self.cleaned_data.get("code")
+    #     t_code = self.request.session.get("code","a")
+    #     print(code)
+    #     print(t_code)
+    #     if code.upper() != t_code.upper():
+    #         raise ValidationError('验证码错误！')
+    #     return code
 
 
     def clean_username(self):
@@ -110,27 +110,27 @@ class Login(forms.Form):
             'required': '密码不能为空!',
         }
     )
-    code = fields.CharField(
-        widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '验证码'}),
-        required=True,
-        error_messages={
-            "invalid": "验证码错误！！",
-            'required': '请输入验证码! ！',
-        }
-    )
+    # code = fields.CharField(
+    #     widget=widgets.TextInput(attrs={'class': "form-control", 'placeholder': '验证码'}),
+    #     required=True,
+    #     error_messages={
+    #         "invalid": "验证码错误！！",
+    #         'required': '请输入验证码! ！',
+    #     }
+    # )
 
     def __init__(self,request, *args, **kwargs):
         super(Login, self).__init__(*args, **kwargs)
         self.user=models.UserInfo.objects
         self.request=request
 
-    def clean_code(self):
-        code = self.cleaned_data.get("code")
-        t_code = self.request.session.get("code","a")
-
-        if code.upper() != t_code.upper():
-            raise ValidationError('验证码错误！')
-        return code
+    # def clean_code(self):
+    #     code = self.cleaned_data.get("code")
+    #     t_code = self.request.session.get("code","a")
+    #
+    #     if code.upper() != t_code.upper():
+    #         raise ValidationError('验证码错误！')
+    #     return code
 
     def clean_password(self):
         username = self.cleaned_data.get('username')

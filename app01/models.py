@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class UserInfo(models.Model):
     """
     用户表
@@ -9,7 +10,7 @@ class UserInfo(models.Model):
     password = models.CharField(verbose_name='密码', max_length=64)
     nickname = models.CharField(verbose_name='昵称', max_length=32)
     email = models.EmailField(verbose_name='邮箱', unique=True)
-    avatar = models.ImageField(verbose_name='头像',upload_to="static/image/")
+    avatar = models.ImageField(verbose_name='头像', upload_to="static/image/", default="/static/image/default.jpg")
 
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
 
@@ -19,6 +20,7 @@ class UserInfo(models.Model):
                                   related_name='f',
                                   through_fields=('user', 'follower'))
 
+
 class Blog(models.Model):
     """
     博客信息
@@ -26,8 +28,9 @@ class Blog(models.Model):
     nid = models.BigAutoField(primary_key=True)
     title = models.CharField(verbose_name='个人博客标题', max_length=64)
     site = models.CharField(verbose_name='个人博客前缀', max_length=32, unique=True)
-    theme = models.CharField(verbose_name='博客主题', max_length=32,default="blog")
+    theme = models.CharField(verbose_name='博客主题', max_length=32, default="blog")
     user = models.OneToOneField(to='UserInfo', to_field='nid')
+
 
 class UserFans(models.Model):
     """
@@ -41,6 +44,7 @@ class UserFans(models.Model):
             ('user', 'follower'),
         ]
 
+
 class Category(models.Model):
     """
     博主个人文章分类表
@@ -50,6 +54,7 @@ class Category(models.Model):
 
     blog = models.ForeignKey(verbose_name='所属博客', to='Blog', to_field='nid')
 
+
 class ArticleDetail(models.Model):
     """
     文章详细表
@@ -57,6 +62,7 @@ class ArticleDetail(models.Model):
     content = models.TextField(verbose_name='文章内容', )
 
     article = models.OneToOneField(verbose_name='所属文章', to='Article', to_field='nid')
+
 
 class UpDown(models.Model):
     """
@@ -71,6 +77,7 @@ class UpDown(models.Model):
             ('article', 'user'),
         ]
 
+
 class Comment(models.Model):
     """
     评论表
@@ -83,6 +90,7 @@ class Comment(models.Model):
     article = models.ForeignKey(verbose_name='评论文章', to='Article', to_field='nid')
     user = models.ForeignKey(verbose_name='评论者', to='UserInfo', to_field='nid')
 
+
 class Tag(models.Model):
     """
     个人标签表
@@ -90,6 +98,7 @@ class Tag(models.Model):
     nid = models.AutoField(primary_key=True)
     title = models.CharField(verbose_name='标签名称', max_length=32)
     blog = models.ForeignKey(verbose_name='所属博客', to='Blog', to_field='nid')
+
 
 class Article(models.Model):
     """
@@ -110,18 +119,18 @@ class Article(models.Model):
     type_choices = [
         (1, "Python"),
         (2, "Linux"),
-        (3, "OpenStack"),
-        (4, "GoLang"),
-        (5, "Django"),
+        (3, "GoLang"),
+        (4, "Django"),
     ]
 
-    article_type_id = models.IntegerField(verbose_name='文章类型',choices=type_choices, default=None)
+    article_type_id = models.IntegerField(verbose_name='文章类型', choices=type_choices, default=None)
 
     tags = models.ManyToManyField(
         to="Tag",
         through='Article2Tag',
         through_fields=('article', 'tag'),
     )
+
 
 class Article2Tag(models.Model):
     """
@@ -134,3 +143,18 @@ class Article2Tag(models.Model):
         unique_together = [
             ('article', 'tag'),
         ]
+
+class Application(models.Model):
+    """
+    申请开通博客
+    """
+    nid = models.BigAutoField(primary_key=True)
+    user = models.OneToOneField(to='UserInfo', to_field='nid',verbose_name="申请用户")
+    text=models.CharField(max_length=128,verbose_name="开通博客理由")
+    type_choices = [
+        (0, "未处理"),
+        (1, "拒绝"),
+        (2, "已开通"),
+    ]
+    status = models.IntegerField(verbose_name='申请状态', choices=type_choices, default=0)
+    create_time=models.DateTimeField(auto_now_add=True,verbose_name="申请时间")

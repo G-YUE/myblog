@@ -14,6 +14,7 @@
             <ul class="nav nav-pills">
                 <li><a>发布时间: {{ count.create_time|date:"Y-m-d H:i:s" }}</a></li>
                 <li><a>阅读({{ count.read_count }})</a></li>
+                <li><a href="#top">返回顶部</a></li>
             </ul>
         </div>
 
@@ -63,6 +64,7 @@
                 <p>评论内容：</p><textarea id="tbCommentBody"></textarea>
                 <p>
                     <button id="btn_comment_submit">提交</button>
+                    <a href="#top">返回顶部</a>
                 </P>
                 <span id="replyId" class="hide"></span>
                 <p><span id="commnet_message"></span></p>
@@ -70,9 +72,8 @@
 
             </div>
         </div>
-        <div style="position: relative">
-            <a style="position: fixed;left: 80px;bottom: 80px;font-size: 25px" href="#top">返回顶部</a>
-        </div>
+
+
     </div>
 
 {% endblock %}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/static/css/nifty.min.css" rel="stylesheet">
+
+    <link href="/static/css/magic-check.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<div id="container" class="cls-container">
+
+    <div id="bg-overlay" style="background-image: url(/static/img/7.jpg)" class="bg-img"></div>
+
+    <div class="cls-content">
+        <div class="cls-content-sm panel">
+            <div class="panel-body">
+                <div class="mar-ver pad-btm">
+                    <h1 class="h3">欢迎登录</h1>
+                </div>
+                <form action="/login/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ obj.username }}
+                    </div>
+                    <div class="form-group">
+                        {{ obj.password }}
+                    </div>
+                    <div class="checkbox pad-btm text-left">
+                        <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox" name="cookie">
+                        <label for="demo-form-checkbox">一个月免登陆</label>
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">登录</button>
+                    {% if obj.username.errors.0 %}
+                        <span>{{ obj.username.errors.0 }}</span>
+                    {% else %}
+                        <span>{{ obj.password.errors.0 }}</span>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div class="pad-all">
+                <a href="/register/" class="btn-link mar-lft">注册</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
