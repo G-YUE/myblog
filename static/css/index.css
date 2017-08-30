@@ -8,7 +8,7 @@
     width: 100%;
     /*background-color: #f8f8f8;*/
     background-image: url(/static/img/6.jpg);
-    background-position:0px -400px;
+    background-position:0px -880px;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -28,7 +28,7 @@
     float: left;
     font-size: 20px;
     line-height: 48px;
-    color: #838c98;
+    color: white;
     width: 130px;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .action-menu a.tb {
-    color: #838c98;
+    color: white;
     padding: 0 13px 0 16px;
     display: inline-block;
     margin-left: -4px;
@@ -59,7 +59,7 @@
 }
 
 .action-nav a {
-    color: #838c98;
+    color: white;
     margin: 0 2px;
     padding: 0 2px;
 }
