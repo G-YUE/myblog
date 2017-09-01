@@ -101,7 +101,7 @@ def login1(request):
             er_obj.status=1
             er_obj.save()
             models.Login.objects.create(user_id=obj.cleaned_data.get("password"),erweima=er_obj)
-            return render(request,"codesuccess.html")
+            return redirect("/codesuccess.html/")
         else:
             return render(request, "login1.html", {"obj": obj})
 
@@ -116,7 +116,6 @@ def erweima(request):
         models.Erweima.objects.create(req=req)
         return HttpResponse(json.dumps(res))
     else:
-        time.sleep(2)
         req=request.POST.get("req")
         res={"status":True,"msg":None}
         erweima_obj = models.Erweima.objects.filter(req=req).first()
@@ -136,6 +135,9 @@ def erweima(request):
 
         return HttpResponse(json.dumps(res))
 
+def codesuccess(request):
+    if request.method=="GET":
+        return render(request,"codesuccess.html")
 
 def logout(request):
     request.session.delete(request.session.session_key)

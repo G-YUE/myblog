@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^login/', views.login),
     url(r'^login1/', views.login1),
     url(r'^erweima/', views.erweima),
+    url(r'^codesuccess.html/', views.codesuccess),
     url(r'^logout/', views.logout),
     url(r'^register/', views.register),
     url(r'^application/', views.application),
