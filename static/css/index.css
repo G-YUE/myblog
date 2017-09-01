@@ -4,7 +4,7 @@
 
 /*头部*/
 .head-box {
-    height: 48px;
+    height: 60px;
     width: 100%;
     /*background-color: #f8f8f8;*/
     background-image: url(/static/img/6.jpg);
@@ -17,19 +17,19 @@
 
 /*导航栏*/
 .head-content {
-    width: 1200px;
-    height: 48px;
+    width: 1300px;
+    height: 60px;
     margin: 0 auto;
-    line-height: 48px;
+    line-height: 60px;
     position: relative;
 }
 
 .title {
     float: left;
-    font-size: 20px;
-    line-height: 48px;
+    font-size: 22px;
+    line-height: 60px;
     color: white;
-    width: 130px;
+    width: 140px;
 }
 
 .action-menu {
@@ -44,12 +44,12 @@
 }
 
 .action-menu a.tb:hover {
-    background-color: #cecece;
+    background-color: rgba(206, 206, 206, 0.27);
     text-decoration: none;
 }
 
 .action-menu a.active, .action-menu a.active:hover {
-    background-color: #cecece;
+    background-color: rgba(206, 206, 206, 0.27);
 }
 
 .action-nav {
@@ -68,6 +68,7 @@
 .body {
     padding-top: 48px;
     height: 100%;
+    background-image: url(/static/img/backend.png);
 }
 
 .count_box {
@@ -78,6 +79,7 @@
 
     min-height: 713px;
     background-color: #fff;
+    opacity: 0.5;
 }
 
 .count_list {
