@@ -39,7 +39,7 @@
                     <div class="comment_item bottom-line" style="margin: 15px 0">
                         <a id="{{ item.nid }}">#{{ forloop.counter }}楼</a>
                         <span>{{ item.create_time | date:"Y-m-d H:i:s" }}</span>
-                        <span><a id="a_comment_author_3731751" href="/{{ item.user.username }}"
+                        <span><a id="a_comment_author_3731751" href="/{{ item.user.username }}/"
                                  target="_blank">{{ item.user.nickname }}</a></span>
                         <span><a onclick="reply('{{ item.user.nickname }}',{{ item.nid }});">回复</a></span>
                     </div>

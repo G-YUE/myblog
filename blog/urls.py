@@ -49,5 +49,7 @@ urlpatterns = [
     url(r'^(?P<user>\w+)/tag/(?P<tid>\w+).html', views.tag_blog),
     url(r'^(?P<user>\w+)/category/(?P<tid>\w+).html', views.tag_blog),
     url(r'^(?P<user>\w+)/datetime/(?P<year>\d+)-(?P<mouth>\d+).html', views.tag_blog),
+    url(r'^', views.page404),
+
 
 ]

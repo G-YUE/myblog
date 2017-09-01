@@ -6,7 +6,7 @@
 
 {% block count %}
     <div>
-        <a href="/manage/article/add.html" class="btn btn-primary">添加</a>
+        <a href="/manage/article/add.html/" class="btn btn-primary">添加</a>
         <a href="/manage/index,html/" class="btn btn-warning">返回</a>
     </div>
     <div style="margin: 10px">
@@ -18,16 +18,16 @@
         <div class="ify">
             <span>系统分类:</span>
             {% if kwargs.article_type_id == 0 %}
-                <a class="active" href="/manage/article/0-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html">全部</a>
+                <a class="active" href="/manage/article/0-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html/">全部</a>
             {% else %}
-                <a href="/manage/article/0-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html">全部</a>
+                <a href="/manage/article/0-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html/">全部</a>
             {% endif %}
             {% for i in type_list %}
                 {% if kwargs.article_type_id == i.0 %}
                     <a class="active"
-                       href="/manage/article/{{ i.0 }}-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html">{{ i.1 }}</a>
+                       href="/manage/article/{{ i.0 }}-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html/">{{ i.1 }}</a>
                 {% else %}
-                    <a href="/manage/article/{{ i.0 }}-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html">{{ i.1 }}</a>
+                    <a href="/manage/article/{{ i.0 }}-{{ kwargs.category_id }}-{{ kwargs.tags__nid }}.html/">{{ i.1 }}</a>
                 {% endif %}
             {% endfor %}
         </div>
@@ -35,23 +35,23 @@
             <span>个人分类:</span>
             {% if kwargs.category_id == 0 %}
                 <a class="active"
-                   href="/manage/article/{{ kwargs.article_type_id }}-0-{{ kwargs.tags__nid }}.html">全部</a>
+                   href="/manage/article/{{ kwargs.article_type_id }}-0-{{ kwargs.tags__nid }}.html/">全部</a>
             {% else %}
-                <a href="/manage/article/{{ kwargs.article_type_id }}-0-{{ kwargs.tags__nid }}.html">全部</a>
+                <a href="/manage/article/{{ kwargs.article_type_id }}-0-{{ kwargs.tags__nid }}.html/">全部</a>
             {% endif %}
             {% for i in category_list %}
                 {% if kwargs.category_id == i.nid %}
                     <a class="active"
-                       href="/manage/article/{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.tags__nid }}.html">{{ i.title }}</a>
+                       href="/manage/article/{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.tags__nid }}.html/">{{ i.title }}</a>
                 {% else %}
-                    <a href="/manage/article/{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.tags__nid }}.html">{{ i.title }}</a>
+                    <a href="/manage/article/{{ kwargs.article_type_id }}-{{ i.nid }}-{{ kwargs.tags__nid }}.html/">{{ i.title }}</a>
                 {% endif %}
             {% endfor %}
             {% if kwargs.category_id == '00' %}
                 <a class="active"
-                   href="/manage/article/{{ kwargs.article_type_id }}-00-{{ kwargs.tags__nid }}.html">未分类</a>
+                   href="/manage/article/{{ kwargs.article_type_id }}-00-{{ kwargs.tags__nid }}.html/">未分类</a>
             {% else %}
-                <a href="/manage/article/{{ kwargs.article_type_id }}-00-{{ kwargs.tags__nid }}.html">未分类</a>
+                <a href="/manage/article/{{ kwargs.article_type_id }}-00-{{ kwargs.tags__nid }}.html/">未分类</a>
             {% endif %}
 
         </div>
@@ -59,22 +59,22 @@
             <span>标签分类:</span>
             {% if kwargs.tags__nid == 0 %}
                 <a class="active"
-                   href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-0.html">全部</a>
+                   href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-0.html/">全部</a>
             {% else %}
-                <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-0.html">全部</a>
+                <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-0.html/">全部</a>
             {% endif %}
             {% for i in tag_list %}
                 {% if kwargs.tags__nid == i.nid %}
                     <a class="active"
-                       href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-{{ i.nid }}.html">{{ i.title }}</a>
+                       href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-{{ i.nid }}.html/">{{ i.title }}</a>
                 {% else %}
-                    <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-{{ i.nid }}.html">{{ i.title }}</a>
+                    <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-{{ i.nid }}.html/">{{ i.title }}</a>
                 {% endif %}
             {% endfor %}
             {% if kwargs.tags__nid == '00' %}
-                <a class="active" href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-00.html">未分类</a>
+                <a class="active" href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-00.html/">未分类</a>
             {% else %}
-                <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-00.html">未分类</a>
+                <a href="/manage/article/{{ kwargs.article_type_id }}-{{ kwargs.category_id }}-00.html/">未分类</a>
             {% endif %}
         </div>
     </div>
@@ -89,7 +89,7 @@
                 <td>{{ i.title }}</td>
                 <td>
                     <div class="oper">
-                        <a href="/manage/article/edit.html?nid={{ i.nid }}" class="fa fa-pencil-square-o">编辑</a>
+                        <a href="/manage/article/edit.html/?nid={{ i.nid }}" class="fa fa-pencil-square-o">编辑</a>
                     </div>
 
                     <div class="oper">

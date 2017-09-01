@@ -120,7 +120,7 @@ def article_add_edit(request,*args,**kwargs):
 
             for i in tag_list:
                 models.Article2Tag.objects.create(**{"article_id": nid, "tag_id": i})
-            return redirect("/manage/article/0-0-0.html")
+            return redirect("/manage/article/0-0-0.html/")
         else:
             dic["art"] = obj
             return render(request,"background/art_add.html",dic)

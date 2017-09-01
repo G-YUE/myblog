@@ -142,7 +142,9 @@ def codesuccess(request):
 def logout(request):
     request.session.delete(request.session.session_key)
     return redirect("/")
-
+	
+def page404(request):
+    return render(request,"pages-404.html")
 
 def register(request):
     if request.method == "GET":

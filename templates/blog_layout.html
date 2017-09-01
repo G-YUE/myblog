@@ -14,11 +14,11 @@
         <h1>{{ user.title }}</h1>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/">首页</a></li>
-            <li><a href="/{{ user.site }}">个人首页</a></li>
+            <li><a href="/{{ user.site }}/">个人首页</a></li>
             {% if usersite %}
-                <li><a href="/{{ usersite }}">我的主页</a></li>
+                <li><a href="/{{ usersite }}/">我的主页</a></li>
             {% endif %}
-            <li><a href="/manage/index.html">后台管理</a></li>
+            <li><a href="/manage/index.html/">后台管理</a></li>
         </ul>
     </div>
 </div>
