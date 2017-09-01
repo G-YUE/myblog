@@ -10,7 +10,7 @@ class UserInfo(models.Model):
     password = models.CharField(verbose_name='密码', max_length=64)
     nickname = models.CharField(verbose_name='昵称', max_length=32)
     email = models.EmailField(verbose_name='邮箱', unique=True)
-    avatar = models.ImageField(verbose_name='头像', upload_to="static/image/", default="/static/image/default.jpg")
+    avatar = models.ImageField(verbose_name='头像', upload_to="static/image/", default="static/image/default.jpg")
 
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
 
@@ -158,3 +158,25 @@ class Application(models.Model):
     ]
     status = models.IntegerField(verbose_name='申请状态', choices=type_choices, default=0)
     create_time=models.DateTimeField(auto_now_add=True,verbose_name="申请时间")
+
+class Erweima(models.Model):
+    """
+    存储二维码唯一标识
+    """
+    req=models.CharField(max_length=32,verbose_name="二维码唯一标识")
+    choice=[(0,0),(1,1)]
+    status=models.IntegerField(choices=choice,verbose_name="状态",default=0)
+    ctime=models.IntegerField(default=100,verbose_name="超时时间")
+    create_time=models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    def __str__(self):
+        return "%s-%s"%(self.req,self.choice)
+
+class Login(models.Model):
+    """
+    二维码和扫码用户绑定
+    """
+    user=models.ForeignKey("UserInfo",verbose_name="扫码用户")
+    erweima=models.ForeignKey("Erweima",verbose_name="二维码")
+
+    def __str__(self):
+        return "%s-%S"%(self.user.username,self.erweima.req)

@@ -2,12 +2,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction  #事务
 from django.db.models import F
+from django.conf import settings
 from app01.view import views
 from app01 import models
 from io import BytesIO
 from utils.random_check_code import rd_check_code
 from utils import Bform, paging
-import json,re
+import json,re,random,string,qrcode,time
 
 
 def foo(fun):
@@ -87,7 +88,56 @@ def login(request):
 
 
 def login1(request):
-    return render(request,"pages-login.html")
+    if request.method=="GET":
+        obj = Bform.Login(request)
+        return render(request,"login1.html",{"obj": obj})
+    else:
+        erweima=request.GET.get('mg')
+        er_obj=models.Erweima.objects.filter(req=erweima).first()
+        if er_obj.status:
+            return HttpResponse("该二维码已失效")
+        obj = Bform.Login(request, request.POST, request.FILES)
+        if obj.is_valid():
+            er_obj.status=1
+            er_obj.save()
+            models.Login.objects.create(user_id=obj.cleaned_data.get("password"),erweima=er_obj)
+            request.session["name"] = obj.cleaned_data.get("username")
+            request.session["id"] = obj.cleaned_data.get("password")
+            if not request.POST.get("cookie"):
+                request.session.set_expiry(86400)
+            else:
+                request.session.set_expiry(604800)
+            return render(request,"codesuccess.html")
+        else:
+            return render(request, "login1.html", {"obj": obj})
+
+def erweima(request):
+    if request.method=="GET":
+        req="".join(random.sample(string.ascii_lowercase+string.ascii_uppercase,10))
+        img = qrcode.make(settings.LOGIN_URL+req)
+        with open("static/codeimg/%s.jpg"%req,"wb") as f:
+            img.save(f)
+        img_url=settings.IMG_URL+req+".jpg"
+        res={"req":req,"url":img_url}
+        models.Erweima.objects.create(req=req)
+        return HttpResponse(json.dumps(res))
+    else:
+        time.sleep(2)
+        req=request.POST.get("req")
+        res={"status":True,"msg":None}
+        erweima_obj = models.Erweima.objects.filter(req=req).first()
+        timeArray = time.strptime(erweima_obj.create_time.strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
+        timeStamp = int(time.mktime(timeArray))
+        now = int(time.time())
+        if now>=timeStamp+erweima_obj.ctime:
+            res["status"]=False
+            res["msg"]="该二维码已失效！"
+        elif erweima_obj.status:
+            head=models.Login.objects.filter(erweima_id=erweima_obj.id).values("user__avatar").first()
+            head_url=settings.BASE_URL+head.get("user__avatar")
+            res["msg"]=head_url
+        return HttpResponse(json.dumps(res))
+
 
 def logout(request):
     request.session.delete(request.session.session_key)

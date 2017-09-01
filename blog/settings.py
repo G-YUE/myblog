@@ -122,3 +122,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+IMG_URL="http://127.0.0.1:8000/static/codeimg/"
+LOGIN_URL="http://127.0.0.1:8000/login1/?mg="
+BASE_URL="http://127.0.0.1:8000/"

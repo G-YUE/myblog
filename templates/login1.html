@@ -12,28 +12,22 @@
 	<div class="wrapper">
 		<div class="container">
 			<h1>Welcome</h1>
-			<form class="form" method="POST" action="/login/">
+			<form class="form" method="POST">
                 {% csrf_token %}
                 {{ obj.username }}
                 {{ obj.password }}
-                 <img class="code" src="/check_code/" title="单击刷新" id="code" onclick="changeCode();">
-                {{ obj.code }}
-                {% if obj.errors.code.0 %}
-                <span class="error">{{ obj.errors.code.0 }}</span>
-                {% elif obj.username.errors.0 %}
+                {% if obj.username.errors.0 %}
                 <span class="error">{{ obj.username.errors.0 }}</span>
                 {% else %}
                 <span class="error">{{ obj.password.errors.0 }}</span>
                 {% endif %}
 				<p><button type="submit" id="login-button">Login</button></p>
-                <p><button id="signup">Sign Up</button></p>
 			</form>
 		</div>
 	</div>
 </div>
 
 <script src="/static/jquery-3.2.1.js" type="text/javascript"></script>
-<script src="/static/js/avco.js"></script>
 <script>
 $('#login-button').click(function (event) {
 	event.preventDefault();
@@ -41,12 +35,7 @@ $('#login-button').click(function (event) {
         $(".form").submit()
     });
 	$('.wrapper').addClass('form-success');
-
 });
-$("#signup").click(function () {
-    window.location.href="/register/"
-    return false
-})
 </script>
 </body>
 </html>
