@@ -101,12 +101,6 @@ def login1(request):
             er_obj.status=1
             er_obj.save()
             models.Login.objects.create(user_id=obj.cleaned_data.get("password"),erweima=er_obj)
-            request.session["name"] = obj.cleaned_data.get("username")
-            request.session["id"] = obj.cleaned_data.get("password")
-            if not request.POST.get("cookie"):
-                request.session.set_expiry(86400)
-            else:
-                request.session.set_expiry(604800)
             return render(request,"codesuccess.html")
         else:
             return render(request, "login1.html", {"obj": obj})
@@ -133,9 +127,13 @@ def erweima(request):
             res["status"]=False
             res["msg"]="该二维码已失效！"
         elif erweima_obj.status:
-            head=models.Login.objects.filter(erweima_id=erweima_obj.id).values("user__avatar").first()
-            head_url=settings.BASE_URL+head.get("user__avatar")
+            user_obj=models.Login.objects.filter(erweima_id=erweima_obj.id).values("user__avatar","user__nid","user__username").first()
+            head_url=settings.BASE_URL+user_obj.get("user__avatar")
             res["msg"]=head_url
+            request.session["name"] = user_obj.get("user__username")
+            request.session["id"] = user_obj.get("user__nid")
+            request.session.set_expiry(86400)
+
         return HttpResponse(json.dumps(res))
 
 
