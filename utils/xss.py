@@ -1,22 +1,32 @@
 from bs4 import BeautifulSoup
 
+
 def xss(old):
     valid_tag = {
-        'p': ['class','id'],
-        'img':['src'],
+        'p': ['class', 'id'],
+        'img': ['src', 'style','weight','height'],
         'div': ['class'],
-        'strong':[],
-        'em':[],
-        'h1':[],
-        'h2':[],
-        'h3':[],
-        'h4':[],
-        'h5':[],
-        'a':[],
-        'pre':[],
-        'code':[],
+        'strong': [],
+        'span':[],
+        'em': [],
+        'h1': [],
+        'h2': [],
+        'h3': [],
+        'h4': [],
+        'h5': [],
+        'a': [],
+        'pre': [],
+        'code': [],
+        'table': [],
+        'thead': [],
+        'tbody': [],
+        'tr': [],
+        'th': [],
+        'td': [],
+        'blockquote': [],
+
     }
-    soup = BeautifulSoup(old,'html.parser')
+    soup = BeautifulSoup(old, 'html.parser')
 
     tags = soup.find_all()
     for tag in tags:

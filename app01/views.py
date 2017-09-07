@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.db import transaction  #事务
+from django.db import transaction  # 事务
 from django.db.models import F
 from django.conf import settings
 from app01.view import views
@@ -8,7 +8,7 @@ from app01 import models
 from io import BytesIO
 from utils.random_check_code import rd_check_code
 from utils import Bform, paging
-import json,re,random,string,qrcode,time
+import json, re, random, string, qrcode, time
 
 
 def foo(fun):
@@ -33,18 +33,18 @@ def index(request, *args, **kwargs):
     article_obj = models.Article.objects.filter(**condition).order_by("-create_time")
 
     username = request.session.get("name")
-    if username == None:
+    if not username:
         blog_url = "#"
     else:
         sit = models.Blog.objects.filter(user__username=username).first()
         if sit:
             blog_url = sit.site
         else:
-            blog_url="application/"
+            blog_url = "application/"
     type_list = models.Article.type_choices
 
     page = request.GET.get("page")
-    if page == None:
+    if not page:
         page = 1
     count = article_obj.count()
     p = paging.Pageinfo(page, count, 10, url)
@@ -88,63 +88,69 @@ def login(request):
 
 
 def login1(request):
-    if request.method=="GET":
+    if request.method == "GET":
         obj = Bform.Login(request)
-        return render(request,"login1.html",{"obj": obj})
+        return render(request, "login1.html", {"obj": obj})
     else:
-        erweima=request.GET.get('mg')
-        er_obj=models.Erweima.objects.filter(req=erweima).first()
+        erweima = request.GET.get('mg')
+        er_obj = models.Erweima.objects.filter(req=erweima).first()
         if er_obj.status:
             return HttpResponse("该二维码已失效")
         obj = Bform.Login(request, request.POST, request.FILES)
         if obj.is_valid():
-            er_obj.status=1
+            er_obj.status = 1
             er_obj.save()
-            models.Login.objects.create(user_id=obj.cleaned_data.get("password"),erweima=er_obj)
+            models.Login.objects.create(user_id=obj.cleaned_data.get("password"), erweima=er_obj)
             return redirect("/codesuccess.html/")
         else:
             return render(request, "login1.html", {"obj": obj})
 
+
 def erweima(request):
-    if request.method=="GET":
-        req="".join(random.sample(string.ascii_lowercase+string.ascii_uppercase,10))
-        img = qrcode.make(settings.LOGIN_URL+req)
-        with open("static/codeimg/%s.jpg"%req,"wb") as f:
+    if request.method == "GET":
+        req = "".join(random.sample(string.ascii_lowercase + string.ascii_uppercase, 10))
+        img = qrcode.make(settings.LOGIN_URL + req)
+        with open("static/codeimg/%s.jpg" % req, "wb") as f:
             img.save(f)
-        img_url=settings.IMG_URL+req+".jpg"
-        res={"req":req,"url":img_url}
+        img_url = settings.IMG_URL + req + ".jpg"
+        res = {"req": req, "url": img_url}
         models.Erweima.objects.create(req=req)
         return HttpResponse(json.dumps(res))
     else:
-        req=request.POST.get("req")
-        res={"status":True,"msg":None}
+        req = request.POST.get("req")
+        res = {"status": True, "msg": None}
         erweima_obj = models.Erweima.objects.filter(req=req).first()
         timeArray = time.strptime(erweima_obj.create_time.strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
         timeStamp = int(time.mktime(timeArray))
         now = int(time.time())
-        if now>=timeStamp+erweima_obj.ctime:
-            res["status"]=False
-            res["msg"]="该二维码已失效！"
+        if now >= timeStamp + erweima_obj.ctime:
+            res["status"] = False
+            res["msg"] = "该二维码已失效！"
         elif erweima_obj.status:
-            user_obj=models.Login.objects.filter(erweima_id=erweima_obj.id).values("user__avatar","user__nid","user__username").first()
-            head_url=settings.BASE_URL+user_obj.get("user__avatar")
-            res["msg"]=head_url
+            user_obj = models.Login.objects.filter(erweima_id=erweima_obj.id).values("user__avatar", "user__nid",
+                                                                                     "user__username").first()
+            head_url = settings.BASE_URL + user_obj.get("user__avatar")
+            res["msg"] = head_url
             request.session["name"] = user_obj.get("user__username")
             request.session["id"] = user_obj.get("user__nid")
             request.session.set_expiry(86400)
 
         return HttpResponse(json.dumps(res))
 
+
 def codesuccess(request):
-    if request.method=="GET":
-        return render(request,"codesuccess.html")
+    if request.method == "GET":
+        return render(request, "codesuccess.html")
+
 
 def logout(request):
     request.session.delete(request.session.session_key)
     return redirect("/")
-	
+
+
 def page404(request):
-    return render(request,"pages-404.html")
+    return render(request, "pages-404.html")
+
 
 def register(request):
     if request.method == "GET":
@@ -163,46 +169,39 @@ def register(request):
         else:
             return render(request, "pages-register.html", {"obj": obj})
 
+
 @foo
 def application(request):
-    if request.method=="POST":
-        res={"status":True,"msg":None}
-        text=request.POST.get("application").strip()
-        if len(text)>=20:
-            application_obj=models.Application.objects.filter(user__username=request.session["name"]).first()
+    if request.method == "POST":
+        res = {"status": True, "msg": None}
+        text = request.POST.get("application").strip()
+        if len(text) >= 20:
+            application_obj = models.Application.objects.filter(user__username=request.session["name"]).first()
             if not application_obj:
 
-                x=models.Application.objects.create(user_id=request.session.get("id"),text=text)
+                x = models.Application.objects.create(user_id=request.session.get("id"), text=text)
                 if x:
-                    res["msg"]="您的申请已经提交到后台，等待审核！"
+                    res["msg"] = "您的申请已经提交到后台，等待审核！"
                 else:
-                    res["status"]=False
-                    res["msg"]="申请提交失败，请稍候再试！"
-            elif application_obj.status==0:
-                res["status"]=False
-                res["msg"]="您已经提交过申请了。正在审核，请不要重复提交！"
-            elif application_obj.status==1:
-                res["status"]=False
-                res["msg"]="您提交的申请被拒绝了。请下周一再提交申请！"
+                    res["status"] = False
+                    res["msg"] = "申请提交失败，请稍候再试！"
+            elif application_obj.status == 0:
+                res["status"] = False
+                res["msg"] = "您已经提交过申请了。正在审核，请不要重复提交！"
+            elif application_obj.status == 1:
+                res["status"] = False
+                res["msg"] = "您提交的申请被拒绝了。请下周一再提交申请！"
         else:
-            res["status"]=False
-            res["msg"]="字数小于20个字！"
+            res["status"] = False
+            res["msg"] = "字数小于20个字！"
 
         return HttpResponse(json.dumps(res))
     else:
-        blog_obj=models.Blog.objects.filter(user__username=request.session["name"]).first()
+        blog_obj = models.Blog.objects.filter(user__username=request.session["name"]).first()
         if not blog_obj:
-            return render(request,"application.html")
+            return render(request, "application.html")
         else:
             return redirect("/")
-
-# def avatar(request):
-#     if request.method == "POST":
-#         print(request.POST)
-#         print(request.FILES)
-#         img = request.FILES.get("fafafa")
-#         url = upload_avatar.avatar(img, img.name, "static/clean/")
-#         return HttpResponse(url)
 
 
 def check_code(request):
@@ -212,17 +211,19 @@ def check_code(request):
     request.session['code'] = code
     return HttpResponse(stream.getvalue())
 
+
 def user_blog(request, *args, **kwargs):
-    site=kwargs.get("user")
+    site = kwargs.get("user")
     obj = models.Blog.objects.filter(site=site).first()
     if not obj:
-        return render(request,"application.html")
-    request.session["bid"]=obj.nid
+        return render(request, "application.html")
+    request.session["bid"] = obj.nid
     article = obj.article_set.all()
 
     dict = views.user_blog(request, obj, article, *kwargs, **kwargs)  # 调用app01.view.views中的函数拿到个人博客主页必须的值
 
     return render(request, "blog.html", dict)
+
 
 def tag_blog(request, *args, **kwargs):
     path = request.path_info.strip("/").split("/")
@@ -231,14 +232,14 @@ def tag_blog(request, *args, **kwargs):
     mouth = kwargs.get("mouth", None)
     type = path[1]
     site = path[0]
-    user=site
+    user = site
 
     obj = models.Blog.objects.filter(site=site).first()
     if not obj:
         return redirect("/")
 
     if type == "tag":
-        article = models.Article.objects.filter(blog__user__username=user,tags__nid=tid) #article2tag__tag_id=tid,
+        article = models.Article.objects.filter(blog__user__username=user, tags__nid=tid)  # article2tag__tag_id=tid,
     elif type == "category":
         article = models.Article.objects.filter(category_id=tid, blog__user__username=user)
     elif type == "datetime":
@@ -248,6 +249,7 @@ def tag_blog(request, *args, **kwargs):
     dict = views.user_blog(request, obj, article, *args, **kwargs)
 
     return render(request, "blog.html", dict)
+
 
 def user_article(request, user, articleid, *args, **kwargs):
     try:
@@ -273,6 +275,7 @@ def user_article(request, user, articleid, *args, **kwargs):
     except Exception as a:
         return redirect("/")
 
+
 @csrf_exempt
 def thumbs(request):
     if request.method == "POST":
@@ -293,10 +296,10 @@ def thumbs(request):
 
         count = models.UpDown.objects.filter(user__username=username, article__nid=nid).exists()
         if count:
-            if type=="up":
+            if type == "up":
                 res["message"] = "您已经赞过了！！！"
             else:
-                res["message"]="您已经踩过了！！！"
+                res["message"] = "您已经踩过了！！！"
             return HttpResponse(json.dumps(res))
         else:
             with transaction.atomic():
@@ -305,29 +308,30 @@ def thumbs(request):
                     art = models.Article.objects.filter(nid=nid)
                     art.update(up_count=F("up_count") + 1)
                     res["count"] = art.first().up_count
-                    res["status"]="up"
+                    res["status"] = "up"
 
                 elif type == "down":
                     models.UpDown.objects.create(up=0, article_id=nid, user_id=uid)
                     art = models.Article.objects.filter(nid=nid)
                     art.update(down_count=F("down_count") + 1)
                     res["count"] = art.first().down_count
-                    res["status"]="down"
+                    res["status"] = "down"
 
                 res["message"] = "提交成功！！"
                 return HttpResponse(json.dumps(res))
 
-        res["message"]="操作错误！请稍后再试！！"
+        res["message"] = "操作错误！请稍后再试！！"
         return HttpResponse(json.dumps(res))
 
 
-def comment(request,*args,**kwargs):
-    if request.method=="GET":
-        res={"status":True,"data":None}
+def comment(request, *args, **kwargs):
+    if request.method == "GET":
+        res = {"status": True, "data": None}
         try:
-            art_id=kwargs.get("nid")
+            art_id = kwargs.get("nid")
             art = models.Article.objects.filter(nid=art_id).first()
-            msg_list = art.comment_set.values("nid","content","reply_id","user__username")
+            msg_list = art.comment_set.values("nid", "content", "reply_id", "user__username")
+
             def dg(dic):
                 msg_dict = {}
                 for item in dic:
@@ -343,29 +347,29 @@ def comment(request,*args,**kwargs):
                 return end_list
 
             comment_list = dg(msg_list)
-            res["data"]=comment_list
+            res["data"] = comment_list
         except Exception as e:
-            res["status"]=False
-            res["message"]=str(e)
+            res["status"] = False
+            res["message"] = str(e)
         return HttpResponse(json.dumps(res))
     else:
         temp = {'status': True, 'result': None, 'message': None}
         try:
             art_id = request.POST.get('article_id')
-            reply_id=request.POST.get("replyId")
+            reply_id = request.POST.get("replyId")
 
             if request.session['id']:
                 content = request.POST.get('comment_content').strip()
-                reply_obj=re.findall(r"(.+):.*",content)
-                reply_contentF=re.findall(r".+:(.*)",content)
+                reply_obj = re.findall(r"(.+):.*", content)
+                reply_contentF = re.findall(r".+:(.*)", content)
                 if len(content) == 0:
                     raise ValueError("评论内容不能为空！！！")
-                if len(reply_obj)==1:
-                    if len(reply_contentF)==0 or reply_contentF[0]=="":
+                if len(reply_obj) == 1:
+                    if len(reply_contentF) == 0 or reply_contentF[0] == "":
                         raise ValueError("评论内容不能为空！！！")
                     reply_name = reply_obj[0].replace("@", "")
                     reply_content = reply_contentF[0].strip()
-                    a=models.Comment.objects.filter(nid=reply_id,user__username=reply_name).exists()
+                    a = models.Comment.objects.filter(nid=reply_id, user__username=reply_name).exists()
                     if a:
                         models.Comment.objects.create(
                             content=reply_content,
@@ -390,4 +394,3 @@ def comment(request,*args,**kwargs):
             temp['status'] = False
             temp['message'] = '登录后才可评论'
         return HttpResponse(json.dumps(temp))
-
